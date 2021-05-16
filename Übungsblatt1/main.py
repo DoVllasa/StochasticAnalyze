@@ -7,26 +7,23 @@ import json
 """
 Aufgabe 1.2
 """
-def plot_diagramms(plot_y,plot_x, plot_y_cum="", plot_urlist=""):
+def plot_diagramms(urliste):
     # x = np.array([1,2,3,4,5])
-    plot_x = json.loads(plot_x)
-    plot_y = json.loads(plot_y)
-
-
-
-    x = np.array(plot_x)
     # y = np.array([3,1,3,1,2])
-    y = np.array(plot_y)
-    y2 = np.array([3,4,7,8,10])
-    # d = np.array([1,1,1,2,3,3,3,4,5,5])
+    # y2 = np.array([3,4,7,8,10])
+    urliste = json.loads(urliste)
+    x, y = np.unique(urliste, return_counts=True)
 
+    y2 = np.cumsum(y)
+    d = np.array(urliste)
+    d = np.sort(d)
+    print(d)
 
     """
         Plot Histogram
     """
     plt.bar(x,y)
     plt.show()
-
 
     """
         Plot Empirical cdf
@@ -50,29 +47,44 @@ def characteristics_of_sample(urliste):
     smin = np.min(urliste)
     spannweite = smax - smin
 
-    print(" Arithmetisches Mittel: ", a, "\n",
-          "Median               : ", b, "\n",
-          "Modalwert            : ", c, "\n",
-          "Varianz              : ", d, "\n",
-          "Standardabweichung   : ", e, "\n",
-          "10% Quantil          : ", q10, "\n",
-          "Interquartilabstand  : ", iqr, "\n",
-          "Spannweite           : ", spannweite, "\n", )
+    print("### Befehl - Arithmetisches Mittel: urliste = json.loads(urliste);  urliste = np.array(urliste);  arithmetisches_mittel = np.mean(urliste) ### \n",
+          "Arithmetisches Mittel: ", a, "\n\n",
+
+          "### Befehl - Media: urliste = json.loads(urliste);  urliste = np.array(urliste);  Median = np.median(urliste) ### \n"
+          "Median               : ", b, "\n\n",
+
+          "### Befehl - Modalwert: urliste = json.loads(urliste);  urliste = np.array(urliste);  Modalwert = np.mode(urliste) ### \n"
+          "Modalwert            : ", c, "\n\n",
+          "### Befehl - Varianz: urliste = json.loads(urliste);  urliste = np.array(urliste);  varianz = np.var(urliste, ddof=1) ###  \n"
+
+          "Varianz              : ", d, "\n\n",
+          "### Befehl - Standardabweichung: urliste = json.loads(urliste);  urliste = np.array(urliste);  Standarabweichung = np.std(urliste, ddof=1) ### \n"
+          "Standardabweichung   : ", e, "\n\n",
+
+          "### Befehl - 75% Quantil: urliste = json.loads(urliste);  urliste = np.array(urliste);  Quantil_75 = np.std(urliste, ddof=1) ### \n"
+          "75% Quantil          : ", q75, "\n\n",
+
+          "### Befehl - 25% Quantil: urliste = json.loads(urliste);  urliste = np.array(urliste);  Quantil_25 = np.std(urliste, ddof=1) ###  \n"
+          "25% Quantil          : ", q25, "\n\n",
+
+          "### Befehl - 10% Quantil: urliste = json.loads(urliste);  urliste = np.array(urliste);  Quantil_10 = np.std(urliste, ddof=1) ### \n"
+          "10% Quantil          : ", q10, "\n\n",
+
+          "### Befehl - Interquartilabstand: urliste = Interquartilabstand = q75-q25 ### \n"
+          "Interquartilabstand  : ", iqr, "\n\n",
+
+          "### Befehl - Spannweite: smax = np.max(urliste); smin = np.min(urliste); spannweite = smax - smin ### \n"
+          "Spannweite           : ", spannweite, "\n\n", )
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--urliste")
-    parser.add_argument("--plot-x", required=False)
-    parser.add_argument("--plot-y", required=False)
-    # parser.add_argument("--plot-cum-y", required=False)
-    # parser.add_argument("--plot-urliste", required=False)
+    parser.add_argument("--plot", type=bool)
     args = parser.parse_args()
     urliste = args.urliste
-    plot_x = args.plot_x
-    plot_y = args.plot_y
-    # plot_cum = args.plot_y
-
-    # plot_urliste = args.plot_urliste
-    characteristics_of_sample(urliste)
-    plot_diagramms(plot_y,plot_x)
+    plot = args.plot
+    if urliste:
+        characteristics_of_sample(urliste)
+    if plot == True:
+        plot_diagramms(urliste)
