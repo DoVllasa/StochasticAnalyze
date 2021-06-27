@@ -5,6 +5,14 @@ import argparse
 import json
 from sklearn.linear_model import LinearRegression
 import math
+from scipy import stats, special
+
+"""
+    Übungsblatt3
+"""
+class Uebungsblatt3():
+    pass
+
 
 """
     Übungsblatt2
@@ -23,12 +31,11 @@ class Uebungsblatt2():
             C(n,k) = n! / k!*(n-k)! --> Without repetition # 1
             C'(n,k) = (n + k -1)! / (n - 1)! * k! --> With repitition # 2
         """
+        comb_result = special.comb(self.n, self.k, repetition=self.repetition, exact=True)  # 2
 
         if self.repetition:
-            comb_result = math.factorial(self.n + self.k -1) / math.factorial(self.n - 1) * math.factorial(self.k)  # 2
             print("C'(n,k) = (n + k -1)! / (n - 1)! * k! --> With repitition: ", comb_result)
         else:
-            comb_result = math.factorial(self.n) / math.factorial(self.k) * math.factorial(self.n - self.k) # 1
             print("C(n,k) = n! / k!*(n-k)! --> Without repetition: ", comb_result)
 
     def variation(self):
@@ -39,7 +46,7 @@ class Uebungsblatt2():
         """
 
         if self.repetition:
-            var_result = self.n ** self.k # 2
+            var_result = pow(self.n,self.k) # 2
             print('V(n,k) = n!/(n-k)! --> without repitition: ', var_result)
         else:
             var_result = math.factorial(self.n) / math.factorial(self.n - self.k) # 1
@@ -115,6 +122,7 @@ class Uebungsblatt1():
         smax = np.max(urliste)
         smin = np.min(urliste)
         spannweite = smax - smin                    # Spannweite
+        verteilungsfkt = np.cumsum(urliste)         # Cumulated list [2,3,5,2] --> [2,5,10,12]
 
         print("Arithmetisches Mittel: ", a, "\n\n",
               "Median               : ", b, "\n\n",
@@ -128,14 +136,30 @@ class Uebungsblatt1():
               "25% Quantil          : ", q25, "\n\n",
               "10% Quantil          : ", q10, "\n\n",
               "Interquartilabstand  : ", iqr, "\n\n",
-              "Spannweite           : ", spannweite, "\n\n", )
+              "Spannweite           : ", spannweite, "\n\n",
+              "Verteilunggsfunktion           : ", verteilungsfkt, "\n\n", )
 
 
     def calculate_coefficient(self, cof1, cof2):
         cof1, cof2 = self.convert_param_to_list(cof1, cof2)
 
-        print("Korrelationskoeffizient: \n",
-              np.corrcoef(cof1,cof2)[0,1])
+        emp_correlationcoefficient = np.corrcoef(cof1,cof2)[0,1]
+        emp_covariance = np.cov(cof1, cof2)
+        Sx = np.var(cof1, ddof=1)
+        Sy = np.var(cof2, ddof=1)
+
+        print("(Empirischer) Korrelationskoeffizient: \n",
+              emp_correlationcoefficient)
+
+
+        print("(Empirische) Kovarianz: \n",
+              emp_covariance)
+
+        print("Sx: \n",
+              Sx)
+
+        print("Sy: \n",
+              Sy)
 
         """
             Punktediagramm
@@ -155,6 +179,26 @@ class Uebungsblatt1():
         plt.show()
 
 
+def erwartungswert_zufallsvariablen(Xi, Pi):
+    Xi = json.loads(Xi)
+    Pi = json.loads(Pi)
+
+    erw = 0
+    for i, j in zip(Xi, Pi):
+        erw += i * j
+
+    var_ex_hoch2 = 0
+    funktion_ex_hoch2 = erw * erw
+    for i, j in zip(Xi, Pi):
+        var_ex_hoch2 += (i*i*j)
+    var = var_ex_hoch2 - funktion_ex_hoch2
+
+    print("Erwartungswert: ", erw, "\n",
+          "Viranz: ", var, "\n",
+          "Standardabweichung: ", math.sqrt(var), "\n",)
+
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--urliste")
@@ -168,6 +212,8 @@ if __name__ == '__main__':
     parser.add_argument("--comb", action='store_true')
     parser.add_argument("--var", action='store_true')
     parser.add_argument("--per", action='store_true')
+    parser.add_argument("--Xi")
+    parser.add_argument("--Pi")
 
     args = parser.parse_args()
     urliste = args.urliste
@@ -181,19 +227,21 @@ if __name__ == '__main__':
     comb = args.comb
     var = args.var
     per = args.per
-
+    Xi = args.Xi
+    Pi = args.Pi
     """
            Characterization of samples
     """
     if cof1 and cof2:
         urliste_uebung1 = Uebungsblatt1(urliste)
         urliste_uebung1.calculate_coefficient(cof1, cof2)
+    if urliste and plot == True:
+        urliste_uebung1 = Uebungsblatt1(urliste)
+        urliste_uebung1.characteristics_of_sample()
+        urliste_uebung1.plot_diagramms()
     if urliste:
         urliste_uebung1 = Uebungsblatt1(urliste)
         urliste_uebung1.characteristics_of_sample()
-    if plot == True:
-        urliste_uebung1 = Uebungsblatt1(urliste)
-        urliste_uebung1.plot_diagramms()
 
     """
         Korrelationskoeffizienten
@@ -222,3 +270,9 @@ if __name__ == '__main__':
             uebungsblatt2 = Uebungsblatt2(n, 0, repetition=rep)
             uebungsblatt2.permutation()
 
+    """
+        Berechnung des Erwartungswertes
+    """
+
+    if Xi and Pi:
+        erwartungswert_zufallsvariablen(Xi,Pi)
