@@ -7,6 +7,34 @@ from sklearn.linear_model import LinearRegression
 import math
 from scipy import stats, special
 
+
+"""
+    Übungsblatt4
+"""
+class Uebungsblatt4():
+    def __init__(self, Xi, Pi):
+        self.Xi = json.loads(Xi)
+        self.Pi = json.loads(Pi)
+
+    def erwartungswert_zufallsvariablen(self):
+        if len(self.Xi) == len(self.Pi):
+            erw = 0
+            for i, j in zip(self.Xi, self.Pi):
+                erw += i * j
+
+            var_ex_hoch2 = 0
+            funktion_ex_hoch2 = erw * erw
+
+            for i, j in zip(self.Xi, self.Pi):
+                var_ex_hoch2 += (i*i*j)
+            var = var_ex_hoch2 - funktion_ex_hoch2
+
+            print("Erwartungswert: ", erw, "\n",
+                  "Viranz: ", var, "\n",
+                  "Standardabweichung: ", math.sqrt(var), "\n",)
+        else:
+            print("Both lists have to be the same length")
+
 """
     Übungsblatt3
 """
@@ -179,23 +207,7 @@ class Uebungsblatt1():
         plt.show()
 
 
-def erwartungswert_zufallsvariablen(Xi, Pi):
-    Xi = json.loads(Xi)
-    Pi = json.loads(Pi)
 
-    erw = 0
-    for i, j in zip(Xi, Pi):
-        erw += i * j
-
-    var_ex_hoch2 = 0
-    funktion_ex_hoch2 = erw * erw
-    for i, j in zip(Xi, Pi):
-        var_ex_hoch2 += (i*i*j)
-    var = var_ex_hoch2 - funktion_ex_hoch2
-
-    print("Erwartungswert: ", erw, "\n",
-          "Viranz: ", var, "\n",
-          "Standardabweichung: ", math.sqrt(var), "\n",)
 
 
 
@@ -275,4 +287,5 @@ if __name__ == '__main__':
     """
 
     if Xi and Pi:
-        erwartungswert_zufallsvariablen(Xi,Pi)
+        berechnung_characteristica_zv = Uebungsblatt4(Xi,Pi)
+        berechnung_characteristica_zv.erwartungswert_zufallsvariablen()
