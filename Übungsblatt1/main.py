@@ -1,11 +1,94 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy import stats
 import argparse
 import json
 from sklearn.linear_model import LinearRegression
 import math
 from scipy import stats, special
+
+class Uebungsblatt5():
+    def __init__(self, x):
+        self.x = json.loads(x)
+
+    def binom(self, n, p):
+        print("Verteilung:")
+        n = float(n)
+        p = float(p)
+
+        for i in range(len(self.x)):
+            print(self.x[i], ": ", stats.binom(n, p).pmf(self.x[i]))
+
+        print("Verteilungsfunktion:")
+
+        for i in range(len(self.x)):
+            print(self.x[i], ": ", stats.binom(n, p).cdf(self.x[i]))
+
+        print("Erwartungswert: ", stats.binom(n, p).expect())
+        print("Varianz", stats.binom(n, p).var())
+
+    def geom(self, p):
+        p = float(p)
+        print("Verteilung:")
+
+        for i in range(len(self.x)):
+            print(self.x[i], ": ", stats.geom(p).pmf(self.x[i]))
+
+        print("Verteilungsfunktion:")
+
+        for i in range(len(self.x)):
+            print(self.x[i], ": ", stats.geom(p).cdf(self.x[i]))
+
+        print("Erwartungswert: ", stats.geom(p).expect())
+        print("Varianz", stats.geom(p).var())
+
+    def poisson(self, l):
+        l = float(l)
+        print("Verteilung:")
+
+        for i in range(len(self.x)):
+            print(self.x[i], ": ", stats.poisson(l).pmf(self.x[i]))
+
+        print("Verteilungsfunktion:")
+
+        for i in range(len(self.x)):
+            print(self.x[i], ": ", stats.poisson(l).cdf(self.x[i]))
+
+        print("Erwartungswert: ", stats.poisson(l).expect())
+        print("Varianz", stats.poisson(l).var())
+
+    def bernoulli(self, p):
+        p = float(p)
+        print("Verteilung:")
+
+        for i in range(len(self.x)):
+            print(self.x[i], ": ", stats.bernoulli(p).pmf(self.x[i]))
+
+        print("Verteilungsfunktion:")
+
+        for i in range(len(self.x)):
+            print(self.x[i], ": ", stats.bernoulli(p).cdf(self.x[i]))
+
+        print("Erwartungswert: ", stats.bernoulli(p).expect())
+        print("Varianz", stats.bernoulli(p).var())
+
+    def hypergeom(self, N, M, n):
+        N = float(N)
+        M = float(M)
+        n = float(n)
+        print("Verteilung:")
+
+        for i in range(len(self.x)):
+            print(self.x[i], ": ", stats.hypergeom(N, M, n).pmf(self.x[i]))
+
+        print("Verteilungsfunktion:")
+
+        for i in range(len(self.x)):
+            print(self.x[i], ": ", stats.hypergeom(N, M, n).cdf(self.x[i]))
+
+        print("Erwartungswert: ", stats.hypergeom(N, M, n).expect())
+        print("Varianz", stats.hypergeom(N, M, n).var())
+
+
 
 
 """
@@ -29,9 +112,17 @@ class Uebungsblatt4():
                 var_ex_hoch2 += (i*i*j)
             var = var_ex_hoch2 - funktion_ex_hoch2
 
+            kovarianz = np.cov(self.Xi, self.Pi)
+
+            standardabweichung = 0
+            print(var)
+            if var > 0:
+                standardabweichung = math.sqrt(var)
+
             print("Erwartungswert: ", erw, "\n",
-                  "Viranz: ", var, "\n",
-                  "Standardabweichung: ", math.sqrt(var), "\n",)
+                  "Varianz: ", var, "\n",
+                  "Standardabweichung: ",standardabweichung , "\n",
+                  "Kovarianz: ", kovarianz, "\n")
         else:
             print("Both lists have to be the same length")
 
@@ -75,10 +166,12 @@ class Uebungsblatt2():
 
         if self.repetition:
             var_result = pow(self.n,self.k) # 2
-            print('V(n,k) = n!/(n-k)! --> without repitition: ', var_result)
+            print("V'(n,k) = n^k --> With repitition: ", var_result)
         else:
             var_result = math.factorial(self.n) / math.factorial(self.n - self.k) # 1
-            print("V'(n,k) = n^k --> With repitition: ", var_result)
+            print('V(n,k) = n!/(n-k)! --> without repitition: ', var_result)
+
+
 
     def permutation(self):
         """
@@ -103,6 +196,7 @@ class Uebungsblatt1():
             urliste = json.loads(self.urliste)
             urliste = np.array(urliste)
             return urliste
+
         if (cof1 and cof2) is not None:
             cof1 = json.loads(cof1)
             cof2 = json.loads(cof2)
@@ -151,6 +245,7 @@ class Uebungsblatt1():
         smin = np.min(urliste)
         spannweite = smax - smin                    # Spannweite
         verteilungsfkt = np.cumsum(urliste)         # Cumulated list [2,3,5,2] --> [2,5,10,12]
+        erwartungswert = np.sum(urliste)
 
         print("Arithmetisches Mittel: ", a, "\n\n",
               "Median               : ", b, "\n\n",
@@ -183,10 +278,10 @@ class Uebungsblatt1():
         print("(Empirische) Kovarianz: \n",
               emp_covariance)
 
-        print("Sx: \n",
+        print("Varianz-cof1 Sx: \n",
               Sx)
 
-        print("Sy: \n",
+        print("Varianz-cof2 Sy: \n",
               Sy)
 
         """
@@ -216,7 +311,7 @@ if __name__ == '__main__':
     parser.add_argument("--urliste")
     parser.add_argument("--cof1")
     parser.add_argument("--cof2")
-    parser.add_argument("--plot", type=bool)
+    parser.add_argument("--plot", action='store_true')
     parser.add_argument("--n")
     parser.add_argument("--k")
     parser.add_argument('--rep', action='store_true')
@@ -226,6 +321,19 @@ if __name__ == '__main__':
     parser.add_argument("--per", action='store_true')
     parser.add_argument("--Xi")
     parser.add_argument("--Pi")
+
+    parser.add_argument("--Ber",action='store_true')
+    parser.add_argument("--geom",action='store_true')
+    parser.add_argument("--Bin",action='store_true')
+    parser.add_argument("--H",action='store_true')
+    parser.add_argument("--Po",action='store_true')
+
+    parser.add_argument("--x")
+    parser.add_argument("--nn")
+    parser.add_argument("--p")
+    parser.add_argument("--l")
+    parser.add_argument("--N")
+    parser.add_argument("--M")
 
     args = parser.parse_args()
     urliste = args.urliste
@@ -241,13 +349,27 @@ if __name__ == '__main__':
     per = args.per
     Xi = args.Xi
     Pi = args.Pi
+
+    Ber = args.Ber
+    geom = args.geom
+    Bin = args.Bin
+    H = args.H
+    Po = args.Po
+
+    x = args.x
+    nn = args.nn
+    p = args.p
+    l = args.l
+    N = args.N
+    M = args.M
+
     """
            Characterization of samples
     """
     if cof1 and cof2:
         urliste_uebung1 = Uebungsblatt1(urliste)
         urliste_uebung1.calculate_coefficient(cof1, cof2)
-    if urliste and plot == True:
+    if urliste and plot:
         urliste_uebung1 = Uebungsblatt1(urliste)
         urliste_uebung1.characteristics_of_sample()
         urliste_uebung1.plot_diagramms()
@@ -289,3 +411,20 @@ if __name__ == '__main__':
     if Xi and Pi:
         berechnung_characteristica_zv = Uebungsblatt4(Xi,Pi)
         berechnung_characteristica_zv.erwartungswert_zufallsvariablen()
+
+
+    """
+        Wichtige dieskrete Verteilungen
+    """
+    if x:
+        uebung5 = Uebungsblatt5(x)
+        if Bin and nn and p:
+            uebung5.binom(nn, p)
+        if geom and p:
+            uebung5.geom(p)
+        if Po and l:
+            uebung5.poisson(l)
+        if Ber and p:
+            uebung5.bernoulli(p)
+        if H and N and M and nn:
+            uebung5.hypergeom(N, M, nn)
