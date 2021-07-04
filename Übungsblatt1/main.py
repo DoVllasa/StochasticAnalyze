@@ -6,6 +6,45 @@ from sklearn.linear_model import LinearRegression
 import math
 from scipy import stats, special
 
+class Uebungsblatt6():
+    def __init__(self, x):
+        self.x = float(x)
+
+    def stetige_gleichverteilung(self, a, b, p=0):
+        a = float(a)
+        b = float(b)
+        p = float(p)
+
+        print("Verteilungsdichte: ", stats.uniform(a, b - a).pdf(self.x))
+        print("Verteilungsfunktion: ", stats.uniform(a, b - a).cdf(self.x))
+        print("Erwartungswert: ", stats.uniform(a, b-a).expect())
+        print("Varianz: ", stats.uniform(a, b-a).var())
+        print("Standardabweichung: ", math.sqrt(stats.uniform(a, b-a).var()))
+        print("p-Quantil: ", stats.uniform(a, b-a).ppf(p))
+
+    def stetige_exponentialverteilung(self, l, p=0):
+        l = float(l)
+        print("Verteilungsdichte: ", stats.expon(scale=1/l).pdf(self.x))
+        print("Verteilungsfunktion: ", stats.expon(scale=1/l).cdf(self.x))
+        print("Erwartungswert: ", stats.expon(scale=1/l).expect())
+        print("Varianz: ", stats.expon(scale=1/l).var())
+        print("Standardabweichung: ", math.sqrt(stats.expon(scale=1/l).var()))
+        print("p-Quantil: ", stats.expon(scale=1/l).ppf(p))
+
+    def stetige_normalverteilung(self, mu, sigma, p=0):
+        mu = float(mu)
+        sigma = float(sigma)
+
+        print("Verteilungsdichte: ", stats.norm(mu, sigma).pdf(self.x))
+        print("Verteilungsfunktion: ", stats.norm(mu, sigma).cdf(self.x))
+        print("Erwartungswert: ", stats.norm(mu, sigma).expect())
+        print("Varianz: ",stats.norm(mu, sigma).var())
+        print("Standardabweichung: ", math.sqrt(stats.norm(mu, sigma).var()))
+        print("p-Quantil: ", stats.norm(mu, sigma).ppf(p))
+
+
+
+
 class Uebungsblatt5():
     def __init__(self, x):
         self.x = json.loads(x)
@@ -335,6 +374,14 @@ if __name__ == '__main__':
     parser.add_argument("--N")
     parser.add_argument("--M")
 
+    parser.add_argument("--gleichver",action='store_true')
+    parser.add_argument("--exponentver", action='store_true')
+    parser.add_argument("--normalver", action='store_true')
+    parser.add_argument("--a")
+    parser.add_argument("--b")
+    parser.add_argument("--mu")
+    parser.add_argument("--sigma")
+
     args = parser.parse_args()
     urliste = args.urliste
     cof1 = args.cof1
@@ -355,6 +402,14 @@ if __name__ == '__main__':
     Bin = args.Bin
     H = args.H
     Po = args.Po
+
+    gleichver = args.gleichver
+    exponentver = args.exponentver
+    normalver = args.normalver
+    a = args.a
+    b = args.b
+    mu = args.mu
+    sigma = args.sigma
 
     x = args.x
     nn = args.nn
@@ -428,3 +483,18 @@ if __name__ == '__main__':
             uebung5.bernoulli(p)
         if H and N and M and nn:
             uebung5.hypergeom(N, M, nn)
+
+    """
+        Kontinuierliche Wahrscheinlichkeitstheorie
+        - Wichtige stetige Verteilungen
+    """
+
+    if gleichver and x and a and b:
+        uebung6 = Uebungsblatt6(x)
+        uebung6.stetige_gleichverteilung(a,b)
+    if exponentver and x and l:
+        uebung6 = Uebungsblatt6(x)
+        uebung6.stetige_exponentialverteilung(l)
+    if normalver and x and mu and sigma:
+        uebung6 = Uebungsblatt6(x)
+        uebung6.stetige_normalverteilung(mu, sigma)
