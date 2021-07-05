@@ -24,6 +24,7 @@ class Uebungsblatt6():
 
     def stetige_exponentialverteilung(self, l, p=0):
         l = float(l)
+        p = float(p)
         print("Verteilungsdichte: ", stats.expon(scale=1/l).pdf(self.x))
         print("Verteilungsfunktion: ", stats.expon(scale=1/l).cdf(self.x))
         print("Erwartungswert: ", stats.expon(scale=1/l).expect())
@@ -34,7 +35,7 @@ class Uebungsblatt6():
     def stetige_normalverteilung(self, mu, sigma, p=0):
         mu = float(mu)
         sigma = float(sigma)
-
+        p = float(p)
         print("Verteilungsdichte: ", stats.norm(mu, sigma).pdf(self.x))
         print("Verteilungsfunktion: ", stats.norm(mu, sigma).cdf(self.x))
         print("Erwartungswert: ", stats.norm(mu, sigma).expect())
@@ -412,7 +413,6 @@ if __name__ == '__main__':
     sigma = args.sigma
 
     x = args.x
-    nn = args.nn
     p = args.p
     l = args.l
     N = args.N
@@ -473,16 +473,16 @@ if __name__ == '__main__':
     """
     if x:
         uebung5 = Uebungsblatt5(x)
-        if Bin and nn and p:
-            uebung5.binom(nn, p)
+        if Bin and n and p:
+            uebung5.binom(n, p)
         if geom and p:
             uebung5.geom(p)
         if Po and l:
             uebung5.poisson(l)
         if Ber and p:
             uebung5.bernoulli(p)
-        if H and N and M and nn:
-            uebung5.hypergeom(N, M, nn)
+        if H and N and M and n:
+            uebung5.hypergeom(N, M, n)
 
     """
         Kontinuierliche Wahrscheinlichkeitstheorie
@@ -491,10 +491,22 @@ if __name__ == '__main__':
 
     if gleichver and x and a and b:
         uebung6 = Uebungsblatt6(x)
-        uebung6.stetige_gleichverteilung(a,b)
+        if p:
+            uebung6.stetige_gleichverteilung(a,b, p=p)
+        else:
+            uebung6.stetige_gleichverteilung(a,b)
+
     if exponentver and x and l:
         uebung6 = Uebungsblatt6(x)
-        uebung6.stetige_exponentialverteilung(l)
+        if p:
+            uebung6.stetige_exponentialverteilung(l, p=p)
+        else:
+            uebung6.stetige_exponentialverteilung(l)
+
+
     if normalver and x and mu and sigma:
         uebung6 = Uebungsblatt6(x)
-        uebung6.stetige_normalverteilung(mu, sigma)
+        if p:
+            uebung6.stetige_normalverteilung(mu, sigma, p=p)
+        else:
+            uebung6.stetige_normalverteilung(mu, sigma)
