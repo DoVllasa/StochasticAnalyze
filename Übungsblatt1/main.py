@@ -277,7 +277,7 @@ class Uebungsblatt1():
         plt.show()
 
 
-    def characteristics_of_sample(self):
+    def characteristics_of_sample(self, p=0):
         urliste = self.convert_param_to_list()
 
         a = np.mean(urliste)                        # Mittelwert
@@ -289,6 +289,7 @@ class Uebungsblatt1():
         q66, q30 = np.percentile(urliste, [66, 30]) # Quantile
         q90 = np.percentile(urliste, 90)            # Quantile
         q10 = np.percentile(urliste, 10)            # Quantile
+        qp_individual = np.percentile(urliste, float(p))            # Quantile
         iqr = q75 - q25                             # Interquartilabstand
         smax = np.max(urliste)
         smin = np.min(urliste)
@@ -307,6 +308,7 @@ class Uebungsblatt1():
               "30% Quantil          : ", q30, "\n\n",
               "25% Quantil          : ", q25, "\n\n",
               "10% Quantil          : ", q10, "\n\n",
+              "Individuelles Quantil: ", qp_individual, "\n\n",
               "Interquartilabstand  : ", iqr, "\n\n",
               "Spannweite           : ", spannweite, "\n\n",
               "Verteilunggsfunktion           : ", verteilungsfkt, "\n\n", )
@@ -448,9 +450,9 @@ if __name__ == '__main__':
         urliste_uebung1 = Uebungsblatt1(urliste)
         urliste_uebung1.characteristics_of_sample()
         urliste_uebung1.plot_diagramms()
-    if urliste:
+    if urliste and p:
         urliste_uebung1 = Uebungsblatt1(urliste)
-        urliste_uebung1.characteristics_of_sample()
+        urliste_uebung1.characteristics_of_sample(p)
 
     """
         
