@@ -8,7 +8,7 @@ from scipy import stats, special
 
 class Uebungsblatt6():
     def __init__(self, x):
-        self.x = float(x)
+        self.x = eval(x)
 
     def stetige_gleichverteilung(self, a, b, p="0"):
         a = eval(a)
@@ -17,6 +17,7 @@ class Uebungsblatt6():
 
         print("Verteilungsdichte: P(X=",self.x,"): ", stats.uniform(a, b - a).pdf(self.x))
         print("Verteilungsfunktion: P(X<=",self.x,"): ", stats.uniform(a, b - a).cdf(self.x))
+        print("Verteilungsfunktion: P(X>=",self.x,"): ", 1 - stats.uniform(a, b - a).cdf(self.x))
         print("Erwartungswert: ", stats.uniform(a, b-a).expect())
         print("Varianz: ", stats.uniform(a, b-a).var())
         print("Standardabweichung: ", math.sqrt(stats.uniform(a, b-a).var()))
@@ -27,6 +28,7 @@ class Uebungsblatt6():
         p = eval(p)
         print("Verteilungsdichte: P(X=",self.x,"): ", stats.expon(scale=1/l).pdf(self.x))
         print("Verteilungsfunktion: P(X<=",self.x,"): ", stats.expon(scale=1/l).cdf(self.x))
+        print("Verteilungsfunktion: P(X>=",self.x,"): ", 1-stats.expon(scale=1/l).cdf(self.x))
         print("Erwartungswert: ", stats.expon(scale=1/l).expect())
         print("Varianz: ", stats.expon(scale=1/l).var())
         print("Standardabweichung: ", math.sqrt(stats.expon(scale=1/l).var()))
@@ -38,6 +40,7 @@ class Uebungsblatt6():
         p = eval(p)
         print("Verteilungsdichte: P(X=",self.x,"): ", stats.norm(mu, sigma).pdf(self.x))
         print("Verteilungsfunktion: P(X<=",self.x,"): ", stats.norm(mu, sigma).cdf(self.x))
+        print("Verteilungsfunktion: P(X>=",self.x,"): ",1- stats.norm(mu, sigma).cdf(self.x))
         print("Erwartungswert: ", stats.norm(mu, sigma).expect())
         print("Varianz: ",stats.norm(mu, sigma).var())
         print("Standardabweichung: ", math.sqrt(stats.norm(mu, sigma).var()))
@@ -488,17 +491,21 @@ if __name__ == '__main__':
     """
         Wichtige dieskrete Verteilungen
     """
-    if  x:
-        uebung5 = Uebungsblatt5(x)
+    if x:
         if Bin and n and p:
+            uebung5 = Uebungsblatt5(x)
             uebung5.binom(n, p)
         if geom and p:
+            uebung5 = Uebungsblatt5(x)
             uebung5.geom(p)
         if Po and l:
+            uebung5 = Uebungsblatt5(x)
             uebung5.poisson(l)
         if Ber and p:
+            uebung5 = Uebungsblatt5(x)
             uebung5.bernoulli(p)
         if H and N and M and n:
+            uebung5 = Uebungsblatt5(x)
             uebung5.hypergeom(N, M, n)
 
     """
