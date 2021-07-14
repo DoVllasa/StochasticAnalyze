@@ -10,40 +10,38 @@ class Uebungsblatt6():
     def __init__(self, x):
         self.x = float(x)
 
-    def stetige_gleichverteilung(self, a, b, p=0):
-        a = float(a)
-        b = float(b)
-        p = float(p)
+    def stetige_gleichverteilung(self, a, b, p="0"):
+        a = eval(a)
+        b = eval(b)
+        p = eval(p)
 
-        print("Verteilungsdichte: ", stats.uniform(a, b - a).pdf(self.x))
-        print("Verteilungsfunktion: ", stats.uniform(a, b - a).cdf(self.x))
+        print("Verteilungsdichte: P(X=",self.x,"): ", stats.uniform(a, b - a).pdf(self.x))
+        print("Verteilungsfunktion: P(X<=",self.x,"): ", stats.uniform(a, b - a).cdf(self.x))
         print("Erwartungswert: ", stats.uniform(a, b-a).expect())
         print("Varianz: ", stats.uniform(a, b-a).var())
         print("Standardabweichung: ", math.sqrt(stats.uniform(a, b-a).var()))
         print("p-Quantil: ", stats.uniform(a, b-a).ppf(p))
 
-    def stetige_exponentialverteilung(self, l, p=0):
-        l = float(l)
-        p = float(p)
-        print("Verteilungsdichte: ", stats.expon(scale=1/l).pdf(self.x))
-        print("Verteilungsfunktion: ", stats.expon(scale=1/l).cdf(self.x))
+    def stetige_exponentialverteilung(self, l, p="0"):
+        l = eval(l)
+        p = eval(p)
+        print("Verteilungsdichte: P(X=",self.x,"): ", stats.expon(scale=1/l).pdf(self.x))
+        print("Verteilungsfunktion: P(X<=",self.x,"): ", stats.expon(scale=1/l).cdf(self.x))
         print("Erwartungswert: ", stats.expon(scale=1/l).expect())
         print("Varianz: ", stats.expon(scale=1/l).var())
         print("Standardabweichung: ", math.sqrt(stats.expon(scale=1/l).var()))
         print("p-Quantil: ", stats.expon(scale=1/l).ppf(p))
 
-    def stetige_normalverteilung(self, mu, sigma, p=0):
-        mu = float(mu)
-        sigma = float(sigma)
-        p = float(p)
-        print("Verteilungsdichte: ", stats.norm(mu, sigma).pdf(self.x))
-        print("Verteilungsfunktion: ", stats.norm(mu, sigma).cdf(self.x))
+    def stetige_normalverteilung(self, mu, sigma, p="0"):
+        mu = eval(mu)
+        sigma = eval(sigma)
+        p = eval(p)
+        print("Verteilungsdichte: P(X=",self.x,"): ", stats.norm(mu, sigma).pdf(self.x))
+        print("Verteilungsfunktion: P(X<=",self.x,"): ", stats.norm(mu, sigma).cdf(self.x))
         print("Erwartungswert: ", stats.norm(mu, sigma).expect())
         print("Varianz: ",stats.norm(mu, sigma).var())
         print("Standardabweichung: ", math.sqrt(stats.norm(mu, sigma).var()))
         print("p-Quantil: ", stats.norm(mu, sigma).ppf(p))
-
-
 
 
 class Uebungsblatt5():
@@ -52,83 +50,86 @@ class Uebungsblatt5():
 
     def binom(self, n, p):
         print("Verteilung:")
-        n = float(n)
-        p = float(p)
+        n = eval(n)
+        p = eval(p)
 
         for i in range(len(self.x)):
-            print(self.x[i], ": ", stats.binom(n, p).pmf(self.x[i]))
+            print("P(X=",self.x[i], "): ", stats.binom(n, p).pmf(self.x[i]))
 
         print("Verteilungsfunktion:")
 
         for i in range(len(self.x)):
-            print(self.x[i], ": ", stats.binom(n, p).cdf(self.x[i]))
+            print("P(X<=",self.x[i], "): ", stats.binom(n, p).cdf(self.x[i]))
+            print("P(X>=",self.x[i], "): ", 1 - stats.binom(n, p).cdf(self.x[i]-1))
 
         print("Erwartungswert: ", stats.binom(n, p).expect())
         print("Varianz", stats.binom(n, p).var())
 
     def geom(self, p):
-        p = float(p)
+        p = eval(p)
         print("Verteilung:")
 
         for i in range(len(self.x)):
-            print(self.x[i], ": ", stats.geom(p).pmf(self.x[i]))
+            print("P(X=",self.x[i], "): ", stats.geom(p).pmf(self.x[i]))
 
         print("Verteilungsfunktion:")
 
         for i in range(len(self.x)):
-            print(self.x[i], ": ", stats.geom(p).cdf(self.x[i]))
+            print("P(X<=",self.x[i], "): ", stats.geom(p).cdf(self.x[i]))
+            print("P(X>=",self.x[i], "): ", 1- stats.geom(p).cdf(self.x[i]-1))
 
         print("Erwartungswert: ", stats.geom(p).expect())
         print("Varianz", stats.geom(p).var())
 
     def poisson(self, l):
-        l = float(l)
+        l = eval(l)
         print("Verteilung:")
 
         for i in range(len(self.x)):
-            print(self.x[i], ": ", stats.poisson(l).pmf(self.x[i]))
+            print("P(X=",self.x[i], "): ", stats.poisson(l).pmf(self.x[i]))
 
         print("Verteilungsfunktion:")
 
         for i in range(len(self.x)):
-            print(self.x[i], ": ", stats.poisson(l).cdf(self.x[i]))
+            print("P(X<=",self.x[i], "): ", stats.poisson(l).cdf(self.x[i]))
+            print("P(X>=",self.x[i], "): ",1- stats.poisson(l).cdf(self.x[i]-1))
 
         print("Erwartungswert: ", stats.poisson(l).expect())
         print("Varianz", stats.poisson(l).var())
 
     def bernoulli(self, p):
-        p = float(p)
+        p = eval(p)
         print("Verteilung:")
 
         for i in range(len(self.x)):
-            print(self.x[i], ": ", stats.bernoulli(p).pmf(self.x[i]))
+            print("P(X=",self.x[i], "): ", stats.bernoulli(p).pmf(self.x[i]))
 
         print("Verteilungsfunktion:")
 
         for i in range(len(self.x)):
-            print(self.x[i], ": ", stats.bernoulli(p).cdf(self.x[i]))
+            print("P(X<=",self.x[i], "): ", stats.bernoulli(p).cdf(self.x[i]))
+            print("P(X>=",self.x[i], "): ", 1-stats.bernoulli(p).cdf(self.x[i]-1))
 
         print("Erwartungswert: ", stats.bernoulli(p).expect())
         print("Varianz", stats.bernoulli(p).var())
 
     def hypergeom(self, N, M, n):
-        N = float(N)
-        M = float(M)
-        n = float(n)
+        N = eval(N)
+        M = eval(M)
+        n = eval(n)
         print("Verteilung:")
 
         for i in range(len(self.x)):
-            print(self.x[i], ": ", stats.hypergeom(N, M, n).pmf(self.x[i]))
+            print("P(X=",self.x[i], "): ", stats.hypergeom(N, M, n).pmf(self.x[i]))
 
         print("Verteilungsfunktion:")
 
         for i in range(len(self.x)):
-            print(self.x[i], ": ", stats.hypergeom(N, M, n).cdf(self.x[i]))
+            print("P(X<=",self.x[i], "): ", stats.hypergeom(N, M, n).cdf(self.x[i]))
+            print("P(X>=",self.x[i], "): ", 1-stats.hypergeom(N, M, n).cdf(self.x[i]-1))
 
         print("Erwartungswert: ", stats.hypergeom(N, M, n).expect())
         print("Varianz", stats.hypergeom(N, M, n).var())
-
-
 
 
 """
@@ -137,7 +138,13 @@ class Uebungsblatt5():
 class Uebungsblatt4():
     def __init__(self, Xi, Pi):
         self.Xi = json.loads(Xi)
-        self.Pi = json.loads(Pi)
+        Pi = Pi.split("[")[1]
+        Pi = Pi.split("]")[0]
+        Pi = Pi.split(",")
+        tmp = []
+        for i in range(len(Pi)):
+            tmp.append(eval(Pi[i]))
+        self.Pi = tmp
 
     def erwartungswert_zufallsvariablen(self):
         if len(self.Xi) == len(self.Pi):
@@ -155,7 +162,6 @@ class Uebungsblatt4():
             kovarianz = np.cov(self.Xi, self.Pi)
 
             standardabweichung = 0
-            print(var)
             if var > 0:
                 standardabweichung = math.sqrt(var)
 
@@ -228,7 +234,7 @@ class Uebungsblatt2():
 
 class Uebungsblatt1():
 
-    def __init__(self, urliste):
+    def __init__(self, urliste=None):
             self.urliste = urliste
 
     def convert_param_to_list(self, cof1=None, cof2=None):
@@ -352,6 +358,10 @@ if __name__ == '__main__':
     parser.add_argument("--cof1")
     parser.add_argument("--cof2")
     parser.add_argument("--plot", action='store_true')
+
+    """
+          Combinatoric
+    """
     parser.add_argument("--n")
     parser.add_argument("--k")
     parser.add_argument('--rep', action='store_true')
@@ -359,9 +369,14 @@ if __name__ == '__main__':
     parser.add_argument("--comb", action='store_true')
     parser.add_argument("--var", action='store_true')
     parser.add_argument("--per", action='store_true')
+
+
     parser.add_argument("--Xi")
     parser.add_argument("--Pi")
 
+    """
+        Diskrete Verteilung
+    """
     parser.add_argument("--Ber",action='store_true')
     parser.add_argument("--geom",action='store_true')
     parser.add_argument("--Bin",action='store_true')
@@ -369,15 +384,17 @@ if __name__ == '__main__':
     parser.add_argument("--Po",action='store_true')
 
     parser.add_argument("--x")
-    parser.add_argument("--nn")
     parser.add_argument("--p")
     parser.add_argument("--l")
     parser.add_argument("--N")
     parser.add_argument("--M")
 
-    parser.add_argument("--gleichver",action='store_true')
-    parser.add_argument("--exponentver", action='store_true')
-    parser.add_argument("--normalver", action='store_true')
+    """
+        Stetige Verteilung
+    """
+    parser.add_argument("--U",action='store_true')
+    parser.add_argument("--exp", action='store_true')
+    parser.add_argument("--No", action='store_true')
     parser.add_argument("--a")
     parser.add_argument("--b")
     parser.add_argument("--mu")
@@ -404,9 +421,9 @@ if __name__ == '__main__':
     H = args.H
     Po = args.Po
 
-    gleichver = args.gleichver
-    exponentver = args.exponentver
-    normalver = args.normalver
+    U = args.U
+    exp = args.exp
+    No = args.No
     a = args.a
     b = args.b
     mu = args.mu
@@ -419,10 +436,10 @@ if __name__ == '__main__':
     M = args.M
 
     """
-           Characterization of samples
+           Characterization of samples und Korrelationskoeffizienten
     """
     if cof1 and cof2:
-        urliste_uebung1 = Uebungsblatt1(urliste)
+        urliste_uebung1 = Uebungsblatt1()
         urliste_uebung1.calculate_coefficient(cof1, cof2)
     if urliste and plot:
         urliste_uebung1 = Uebungsblatt1(urliste)
@@ -433,23 +450,23 @@ if __name__ == '__main__':
         urliste_uebung1.characteristics_of_sample()
 
     """
-        Korrelationskoeffizienten
+        
     """
-    if cof1 and cof2:
-        urliste_uebung1 = Uebungsblatt1(urliste)
-        urliste_uebung1.calculate_coefficient(cof1,cof2)
+    # if cof1 and cof2:
+    #     urliste_uebung1 = Uebungsblatt1(urliste)
+    #     urliste_uebung1.calculate_coefficient(cof1,cof2)
 
     """
         Variation, Combination and permutation
     """
-    if n and k:
-        if comb:
+    if n:
+        if comb and k:
             if rep:
                 uebungsblatt2 = Uebungsblatt2(n, k, repetition=rep)
             else:
                 uebungsblatt2 = Uebungsblatt2(n, k, repetition=no_rep)
             uebungsblatt2.combinatoric()
-        if var:
+        if var and k:
             if rep:
                 uebungsblatt2 = Uebungsblatt2(n, k, repetition=rep)
             else:
@@ -471,7 +488,7 @@ if __name__ == '__main__':
     """
         Wichtige dieskrete Verteilungen
     """
-    if x:
+    if  x:
         uebung5 = Uebungsblatt5(x)
         if Bin and n and p:
             uebung5.binom(n, p)
@@ -489,22 +506,21 @@ if __name__ == '__main__':
         - Wichtige stetige Verteilungen
     """
 
-    if gleichver and x and a and b:
+    if U and x and a and b:
         uebung6 = Uebungsblatt6(x)
         if p:
             uebung6.stetige_gleichverteilung(a,b, p=p)
         else:
             uebung6.stetige_gleichverteilung(a,b)
 
-    if exponentver and x and l:
+    if exp and x and l:
         uebung6 = Uebungsblatt6(x)
         if p:
             uebung6.stetige_exponentialverteilung(l, p=p)
         else:
             uebung6.stetige_exponentialverteilung(l)
 
-
-    if normalver and x and mu and sigma:
+    if No and x and mu and sigma:
         uebung6 = Uebungsblatt6(x)
         if p:
             uebung6.stetige_normalverteilung(mu, sigma, p=p)
